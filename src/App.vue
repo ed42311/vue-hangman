@@ -38,7 +38,6 @@
     <p>"wordArray" {{wordArray}}</p>
     <div>
        <h1 v-if="this.strikes >= 12">You Lose</h1>
-       
     </div>
   </div>
 </template>
