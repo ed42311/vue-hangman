@@ -34,6 +34,15 @@
       {{ strikes }}
     </h3>
     <p>{{word}}</p>
+    <div @click="doSomething(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
+        {{ letter }}
+    </div>
+    <div @click="doSomething(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
+        {{ letter }}
+    </div>
+    <div @click="doSomething(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
+        {{ letter }}
+    </div>
     <div>
        <h1 v-if="this.strikes >= 12">You Lose</h1>
     </div>
@@ -51,7 +60,10 @@ export default {
       playing: true,
       buttonTxt: "Guess",
       word: '',
-      wordBank: ['Kate', 'Claire', 'Ed', 'Scott']
+      wordBank: ['Kate', 'Claire', 'Ed', 'Scott'],
+      lettersArr1: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
+      lettersArr2: ['J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'],
+      lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     }
   },
   beforeCreate() {
@@ -74,13 +86,17 @@ export default {
         this.msg = "You Dead!"
         this.playing = false
         this.strikes++
-        this.buttonTxt = "Play Agian?"
+        this.buttonTxt = "Play Again?"
       } else {
         this.msg = 'New Hangman Game'
         this.strikes = 0
         this.playing = true
         this.buttonTxt = "Guess"
       }
+    },
+    doSomething(letter) {
+
+      console.log(letter);
     }
   }
 }
