@@ -77,13 +77,15 @@ export default {
       playing: true,
       buttonTxt: "Guess",
       word: '',
-      wordBank: ['Kate', 'Claire', 'Ed', 'Scott'],
+      wordArray: [],
+      chosenLetter: 'a',
+      chosenLetterArray: [],
       lettersArr1: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
       lettersArr2: ['J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'],
-      lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     }
   },
-  create() {
+  created() {
     this.randomWordApi()
   },
   methods: {
@@ -93,9 +95,13 @@ export default {
           "X-Mashape-Key": "tW0afqvn72mshW26R5qSzD0Ix8g5p19lwqcjsnGKh4XVnyKcHW",
           "Accept": "application/json"
         }
-      })
-      .then(res => res.json())
-      .then((data) => {this.word = data.word})
+      }).then(res => res.json())
+      .then((data) => {this.word= data.word})
+    },
+    checkLetter(word){
+      this.wordArray = word.split('')
+
+      this.chosenLetterArray = this.wordArray.filter(char => char === this.chosenLetter)
     },
     iterClick () {
       if(this.strikes < 11) {
@@ -109,9 +115,9 @@ export default {
         this.playing = true
         this.buttonTxt = "Guess"
       }
+      this.checkLetter(this.word)
     },
     doSomething(letter) {
-
       console.log(letter);
     }
   }
@@ -137,4 +143,30 @@ export default {
     background: linear-gradient(to left top, transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%);
     color: dimgrey;
   }
-</style>
+  .letter {
+    display: inline-block;
+    border-bottom: 1px solid;
+    margin: 0px 3px 0px 3px;
+    font-size: 30px;
+    min-width: 30px;
+    vertical-align: bottom;
+  }
+  .possibleLetter {
+    display: inline-block;
+    margin: 10px 3px 0px 3px;
+    font-size: 30px;
+    min-width: 30px;
+    cursor: pointer;
+  }
+  button {
+    margin-top: 20px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  button:hover {
+      background-color: #e6e6e6;
+      border-color: #adadad;
+  }
+</style>  
