@@ -77,9 +77,9 @@ export default {
       playing: true,
       buttonTxt: "Guess",
       word: '',
-      wordDisplayLetters = []
-      wordNotDisplayLetters = []
-      usedLetters = []
+      wordDisplayLetters: [],
+      wordNotDisplayLetters: [],
+      usedLetters: [],
       wordArray: [],
       chosenLetter: 'a',
       chosenLetterArray: [],
@@ -122,7 +122,7 @@ export default {
     },
     doSomething(letter) {
       console.log(letter);
-    }
+    },
 
     matchNotMatch() {
       this.usedLetters.push(letter)
@@ -185,4 +185,4 @@ export default {
       background-color: #e6e6e6;
       border-color: #adadad;
   }
-</style>  
+</style>
