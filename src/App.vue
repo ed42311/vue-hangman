@@ -40,6 +40,10 @@
     <h3>
       {{ strikes }}
     </h3>
+    <p>{{word}}</p>
+    <div>
+       <h1 v-if="this.strikes >= 12">You Lose</h1>
+    </div>
   </div>
 </template>
 
@@ -52,10 +56,24 @@ export default {
       strikes: 0,
       msg: 'New Hangman Game',
       playing: true,
-      buttonTxt: "Guess"
+      buttonTxt: "Guess",
+      word: '',
+      wordBank: ['Kate', 'Claire', 'Ed', 'Scott']
     }
   },
-  methods : {
+  beforeCreate() {
+    this.randomWordApi()
+  },
+  methods: {
+    async randomWordApi(){
+      await fetch('https://wordsapiv1.p.mashape.com/words?random=true', {
+        headers: {
+          "X-Mashape-Key": "tW0afqvn72mshW26R5qSzD0Ix8g5p19lwqcjsnGKh4XVnyKcHW",
+          "Accept": "application/json"
+        }
+      }).then(res => res.json())
+      .then((data) => {this.word = data.word})
+    },
     iterClick () {
       if(this.strikes < 11) {
         this.strikes++
@@ -71,29 +89,7 @@ export default {
         this.buttonTxt = "Guess"
       }
     }
-  },
-  created() {
-      this.randomWordApi()
-  },
-  methods: {
-    getRandomWord() {
-     let index = Math.floor((Math.random() * this.wordBank.length + 1))
-
-     let word = this.wordBank[index]
-
-     this.wordBank.splice(index, 1)
-
-     return word
-   },
-    async randomWordApi(){
-      fetch('https://wordsapiv1.p.mashape.com/words?random=true', {
-        headers: {
-          "X-Mashape-Key": "tW0afqvn72mshW26R5qSzD0Ix8g5p19lwqcjsnGKh4XVnyKcHW",
-          "Accept": "application/json"
-        }
-      }).then(res => res.json())
-      .then((data) => {this.word = data.word})
-    }   
+  }
 }
 </script>
 
