@@ -29,16 +29,32 @@
       <line v-if="strikes > 9" x1="230" y1="170" x2="250" y2="200" style="stroke:black;fill:none;stroke-width:2px;" />
       <line v-if="strikes > 10" x1="230" y1="170" x2="210" y2="200" style="stroke:black;fill:none;stroke-width:2px;" />
     </svg>
-    <button @click="iterClick()">{{ buttonTxt }}</button>
-    <h3>
-      {{ strikes }}
-    </h3>
-    <p>"Word" {{word}}</p>
-    <p>"chosenLetterArray" {{chosenLetterArray}}</p>
-    <p>"wordArray" {{wordArray}}</p>
     <div>
-       <h1 v-if="this.strikes >= 12">You Lose</h1>
+      <div class="letter" v-for="letter in wordDisplayLetters">
+        {{letter}}
+      </div>
     </div>
+    <template v-if="initialized">
+      <div>
+        <div @click="tryLetter(letter)" class="possibleLetter" :class="getStrikethroughClass(letter)" v-for="letter in possibleLetters1">
+          {{letter}}
+        </div>
+      </div>
+      <div>
+        <div @click="tryLetter(letter)" class="possibleLetter" :class="getStrikethroughClass(letter)" v-for="letter in possibleLetters2">
+          {{letter}}
+        </div>
+      </div>
+      <div>
+        <div @click="tryLetter(letter)" class="possibleLetter" :class="getStrikethroughClass(letter)" v-for="letter in possibleLetters3">
+          {{letter}}
+        </div>
+      </div>
+      <div>
+        <h1 v-if="this.strikes >= 12">You Lose</h1>
+      </div>
+    </template>
+    <button @click="initialize()">New Game</button>
   </div>
 </template>
 
