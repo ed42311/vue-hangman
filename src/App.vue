@@ -52,15 +52,19 @@
     <div>
     </div>
     <p>{{word}}</p>
-    <div @click="doSomething(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
+    <div @click="checkLetter(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
         {{ letter }}
     </div>
-    <div @click="doSomething(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
+    <div @click="checkLetter(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
         {{ letter }}
     </div>
-    <div @click="doSomething(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
+    <div @click="checkLetter(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
         {{ letter }}
     </div>
+    <div v-for="(letter, index) in chosenLetterArray" :key="'arr4-' + index">
+        {{ letter }}
+    </div>
+
     <div>
        <h1 v-if="this.strikes >= 12">You Lose</h1>
     </div>
@@ -101,10 +105,10 @@ export default {
       }).then(res => res.json())
       .then((data) => {this.word= data.word})
     },
-    checkLetter(word){
-      this.wordArray = word.split('')
-
-      this.chosenLetterArray = this.wordArray.filter(char => char === this.chosenLetter)
+    testLetter(chosenLetter){
+      this.wordArray = this.word.toUpperCase().split('')
+      console.log("x", this.wordArray);
+      this.chosenLetterArray = this.wordArray.filter(char => char === chosenLetter)
     },
     iterClick () {
       if(this.strikes < 11) {
@@ -118,10 +122,9 @@ export default {
         this.playing = true
         this.buttonTxt = "Guess"
       }
-      this.checkLetter(this.word)
     },
-    doSomething(letter) {
-      console.log(letter);
+    checkLetter(letter) {
+      this.testLetter(letter)
     },
 
     matchNotMatch() {
