@@ -52,6 +52,9 @@ export default {
       buttonTxt: "Guess",
       word: '',
       wordBank: ['Kate', 'Claire', 'Ed', 'Scott']
+      wordDisplayLetters = []
+      wordNotDisplayLetters = []
+      usedLetters = []
     }
   },
   beforeCreate() {
@@ -80,6 +83,19 @@ export default {
         this.strikes = 0
         this.playing = true
         this.buttonTxt = "Guess"
+      }
+    }
+
+    matchNotMatch() {
+      this.usedLetters.push(letter)
+      let match = false
+      for (let i = 0; i < this.wordDisplayLetters.length; i++) {
+        if (letter === this.wordLetters[i]) {
+          this.wordDisplayLetters.splice(i, 1, letter)
+        } else {
+          this.wordNotDisplayLetters.splice(i, 1, letter)
+        }
+          match = true
       }
     }
   }
