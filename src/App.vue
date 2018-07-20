@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <h1>{{ msg }}</h1>
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'app',
   data () {
@@ -62,21 +64,64 @@ export default {
         this.buttonTxt = "Guess"
       }
     }
-  }
+  },
+  created() {
+      this.randomWordApi()
+  },
+  methods: {
+    getRandomWord() {
+     let index = Math.floor((Math.random() * this.wordBank.length + 1))
+
+     let word = this.wordBank[index]
+
+     this.wordBank.splice(index, 1)
+
+     return word
+   },
+    async randomWordApi(){
+      fetch('https://wordsapiv1.p.mashape.com/words?random=true', {
+        headers: {
+          "X-Mashape-Key": "tW0afqvn72mshW26R5qSzD0Ix8g5p19lwqcjsnGKh4XVnyKcHW",
+          "Accept": "application/json"
+        }
+      }).then(res => res.json())
+      .then((data) => {this.word = data.word})
+    }   
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  #app {
+    text-align: center;
+  }
+.letter {
+  display: inline-block;
+  border-bottom: 1px solid;
+  margin: 0px 3px 0px 3px;
+  font-size: 30px;
+  min-width: 30px;
+  vertical-align: bottom;
 }
-
-h1 {
-  font-weight: normal;
+.possibleLetter {
+  display: inline-block;
+  margin: 10px 3px 0px 3px;
+  font-size: 30px;
+  min-width: 30px;
+  cursor: pointer;
+}
+.diagonal-strike {
+  background: linear-gradient(to left top, transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%);
+  color: dimgrey;
+}
+button {
+  margin-top: 20px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+}
+button:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
 }
 </style>
