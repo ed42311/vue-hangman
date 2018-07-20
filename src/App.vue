@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="350px" height="260px" viewBox="0 0 350 275"
@@ -44,63 +45,40 @@
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    data: function () {
-      return {
-        strikes: 12,
-        word: "HANGMAN",
-        wordLetters: ['H', 'A', 'N', 'G', 'M', 'A', 'N'],
-        wordDisplayLetters: ['H', 'A', 'N', 'G', 'M', 'A', 'N'],
-        usedLetters: [],
-        possibleLetters1: ["A", "B", "C", "D", "E", "F", "G", "H", "I"],
-        possibleLetters2: ["J", "K", "L", "M", "N", "O", "P", "Q", "R", "S"],
-        possibleLetters3: ["T", "U", "V", "W", "X", "Y", "Z"],
-        initialized: false,
-        wordBank: ['COFFEE', 'ZEBRA', 'ELEPHANT', 'CHICAGO', 'AMSTERDAM', 'BARCELONA', 'SHENZHEN', 'LONDON', 'MISSISSIPPI', 'STARTUP', 'JAVASCRIPT', 'PYTHON']
-      }
-    },
-    methods: {
-      initialize() {
-        this.initialized = true
-        this.strikes = 0
-        this.word = this.getRandomWord()
-        this.wordLetters = this.word.split('')
-        this.wordDisplayLetters = Array(this.word.length)
-        this.usedLetters = []
-      },
-      getRandomWord() {
-        let index = Math.random() * (this.wordBank.length - 0)
-        index = Math.floor(index)
 
-        let word = this.wordBank[index]
-        this.wordBank.splice(index, 1) // remove the word so it won't be repeated
-        return word
-      },
-      tryLetter(letter) {
-        if (this.usedLetters.includes(letter)) {
-          return
-        }
-        this.usedLetters.push(letter)
-        let match = false
-        for (let i = 0; i < this.wordDisplayLetters.length; i++) {
-          if (letter === this.wordLetters[i]) {
-            this.wordDisplayLetters.splice(i, 1, letter)
-            match = true
-          }
-        }
-        if (!match) {
-          this.strikes++
-        }
-      },
-      getStrikethroughClass(letter) {
-        if (this.usedLetters.includes(letter)) {
-          return 'diagonal-strike'
-        }
-        return null
-      }
+export default {
+  name: 'app',
+  data () {
+    return {
+      msg: 'New Hangman Game',
+      wordBank: ['Hangman', 'Detroit', 'Happiness','Kite','River'],
+      index: 0,
+      word: ''
     }
-  }
+  },
+  created() {
+      this.randomWordApi()
+  },
+  methods: {
+    getRandomWord() {
+     let index = Math.floor((Math.random() * this.wordBank.length + 1))
+
+     let word = this.wordBank[index]
+
+     this.wordBank.splice(index, 1)
+
+     return word
+   },
+    async randomWordApi(){
+      fetch('https://wordsapiv1.p.mashape.com/words?random=true', {
+        headers: {
+          "X-Mashape-Key": "tW0afqvn72mshW26R5qSzD0Ix8g5p19lwqcjsnGKh4XVnyKcHW",
+          "Accept": "application/json"
+        }
+      }).then(res => res.json())
+      .then((data) => {this.word = data.word})
+    }   
+}
 </script>
 
 <style>
