@@ -15,6 +15,7 @@
           </defs>
         <!-- End shade reference for the noggin -->
         <!-- Smile -->
+
           <polyline v-if="strikes > 5 && strikes < 12" points="217,92 218,95 219,97 221,99 223,99 225,98 226,98 227,99 228,98 229,98 232,96 235,95 237,94 238,93 239,92"
           style="fill:none;stroke:black;stroke-width:1" />
         <!-- End Smile -->
@@ -47,25 +48,25 @@
           <line v-if="strikes > 9" x1="230" y1="170" x2="250" y2="200" style="stroke:black;fill:none;stroke-width:2px;" />
           <line v-if="strikes > 10" x1="230" y1="170" x2="210" y2="200" style="stroke:black;fill:none;stroke-width:2px;" />
         <!-- End the gallows -->
+
       </svg>
     </div>
     <div>
     </div>
-    <p>{{word}}</p>
-    <div @click="checkLetter(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
+    <div class="letter" v-for="(letter, index) in word" :key="'wordArray' + index">{{letter}}</div></br>
+    <div  @click="checkLetter(letter)" :class="letterClass" v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
         {{ letter }}
-    </div>
-    <div @click="checkLetter(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
+    </div></br>
+    <div  @click="checkLetter(letter)" :class="letterClass" v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
         {{ letter }}
-    </div>
-    <div @click="checkLetter(letter)" class="possibleLetter" v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
+    </div></br>
+    <div  @click="checkLetter(letter)" :class="letterClass" v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
         {{ letter }}
-    </div>
+    </div></br>
     <div v-for="(letter, index) in chosenLetterArray" :key="'arr4-' + index">
         {{ letter }}
-    </div>
-
-    <div>
+      </div>
+      <div>
        <h1 v-if="this.strikes >= 12">You Lose</h1>
     </div>
   </div>
@@ -80,7 +81,7 @@ export default {
       msg: 'New Hangman Game',
       playing: true,
       buttonTxt: "Guess",
-      word: '',
+      word: 'MEOW',
       wordDisplayLetters: [],
       wordNotDisplayLetters: [],
       usedLetters: [],
@@ -89,7 +90,9 @@ export default {
       chosenLetterArray: [],
       lettersArr1: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
       lettersArr2: ['J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'],
-      lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+      lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      letterClass: 'possibleLetter',
+      isUsed: true
     }
   },
   created() {
@@ -103,12 +106,18 @@ export default {
           "Accept": "application/json"
         }
       }).then(res => res.json())
-      .then((data) => {this.word= data.word})
+      .then((data) => {console.log(data)})
     },
+
     testLetter(chosenLetter){
+      //create an array of letters that have been clicked on
+      //bind data to a function handler returns data on condition
+      this.usedLetters.push(chosenLetter)
       this.wordArray = this.word.toUpperCase().split('')
-      console.log("x", this.wordArray);
       this.chosenLetterArray = this.wordArray.filter(char => char === chosenLetter)
+      console.log("chosenLetterArray", this.chosenLetterArray);
+      console.log("usedLetters", this.usedLetters);
+
     },
     iterClick () {
       if(this.strikes < 11) {
@@ -127,7 +136,7 @@ export default {
       this.testLetter(letter)
     },
 
-    matchNotMatch() {
+    matchNotMatch(letter) {
       this.usedLetters.push(letter)
       let match = false
       for (let i = 0; i < this.wordDisplayLetters.length; i++) {
