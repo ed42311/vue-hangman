@@ -1,0 +1,1 @@
+//v-bind:class="[isUsed ? "diagonal-strike" : "possibleLetter"]"
