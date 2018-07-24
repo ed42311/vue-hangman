@@ -71,9 +71,10 @@
         v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
           {{ letter }}
     </div></br>
-      <div>
-       <h1 v-if="this.strikes >= 12">You Lose</h1>
-    </div>
+      <div v-if="this.strikes >= 12">
+       <h1>You Lose</h1>
+       <button @click="reset()"> Play Again?</button>
+     </div>
   </div>
 </template>
 <script>
@@ -95,6 +96,7 @@ export default {
       lettersArr1: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
       lettersArr2: ['J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'],
       lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+      win: false
     }
   },
   created() {
@@ -111,25 +113,28 @@ export default {
      return word
    },
    testLetter(chosenLetter){
-
-      this.usedLetters.push(chosenLetter)
-      
       this.matchNotMatch(chosenLetter)
-      if (!this.wordArray.includes(chosenLetter)) {
-          this.iterClick()
+      if (!this.wordArray.includes(chosenLetter) && !this.usedLetters.includes(chosenLetter)) {
+          this.iterClick(chosenLetter)
       }
+      this.usedLetters.push(chosenLetter)
     },
-    iterClick () {
-      if(this.strikes < 11) {
+    iterClick (letter) {
+      if(this.strikes <= 11) {
         this.strikes++
-      } else if (this.strikes === 11) {
+      } else if (this.strikes === 12) {
         this.playing = false
-        this.strikes++
-        this.buttonTxt = "Play Again?"
       } else {
         this.strikes = 0
         this.playing = true
       }
+    },
+    reset(){
+      this.word = this.getRandomWord()
+      this.wordArray = this.word.toUpperCase().split('')
+      this.wordDisplayLetters = Array(this.word.length)
+      this.strikes = 0
+      this.usedLetters = []
     },
     strikeThroughClass(letter) {
       if (this.usedLetters.includes(letter)){
