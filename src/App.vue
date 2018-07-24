@@ -1,6 +1,7 @@
 
 <template>
-  <div id="app">
+  <div  id="app">
+    <!-- <canvas :class = "winClass()" width="800" height="1200"> -->
     <h1>{{ msg }}</h1>
     <div class="gallows">
       <svg width="350" height="260" viewBox="0 0 350 275"
@@ -73,12 +74,17 @@
     </div></br>
       <div v-if="this.strikes >= 12">
        <h1>You Lose</h1>
-       <button @click="reset()"> Play Again?</button>
+       <button @click="reset()">Play Again?</button>
      </div>
+     <div v-if="this.win">
+      <h1>You Won!</h1>
+      <button @click="reset()">Play Again?</button>
+    </div>
+    <!-- </canvas> -->
   </div>
 </template>
 <script>
-
+const confetti = require('./confetti.js')
 const wordsArray = require('./words.js')
 
 export default {
@@ -100,6 +106,8 @@ export default {
     }
   },
   created() {
+    this.winClass()
+    confetti
     this.word = this.getRandomWord()
     this.wordArray = this.word.toUpperCase().split('')
     this.wordDisplayLetters = Array(this.word.length)
@@ -112,7 +120,13 @@ export default {
      wordsArray.default.splice(index, 1)
      return word
    },
+   winClass(){
+     if (true) {
+       return 'confetti'
+     }
+   },
    testLetter(chosenLetter){
+     console.log(this.word);
       this.matchNotMatch(chosenLetter)
       if (!this.wordArray.includes(chosenLetter) && !this.usedLetters.includes(chosenLetter)) {
           this.iterClick(chosenLetter)
@@ -135,6 +149,7 @@ export default {
       this.wordDisplayLetters = Array(this.word.length)
       this.strikes = 0
       this.usedLetters = []
+      this.win = false
     },
     strikeThroughClass(letter) {
       if (this.usedLetters.includes(letter)){
@@ -142,14 +157,15 @@ export default {
       }
     },
     matchNotMatch(letter) {
-      let match = false
       for (let i = 0; i < this.wordDisplayLetters.length; i++) {
-        if (letter === this.wordArray[i]) {
+         if (letter === this.wordArray[i]) {
           this.wordDisplayLetters.splice(i, 1, letter)
         }
-          match = true
       }
-    }
+      if(!this.wordDisplayLetters.includes(undefined)) {
+        this.win = true
+      }
+    },
   }
 }
 </script>
@@ -209,5 +225,41 @@ export default {
     min-width: 30px;
     vertical-align: bottom;
     color: #ffffff;
+  },
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    height: 100%;
+    width: 100%;
+  },
+  .confetti{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  },
+
+  a.iprodev {
+    line-height: normal;
+    font-family: Varela Round, sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 13px;
+    color: #A7AAAE;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    border: 1px solid #A7AAAE;
+    padding: 12px 20px 10px;
+    border-radius: 50px;
+    transition: all .1s ease-in-out;
+    text-transform: uppercase;
+  },
+  a.iprodev:hover {
+    background: #A7AAAE;
+    color: white;
   }
+
 </style>
