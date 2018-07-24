@@ -53,25 +53,32 @@
     </div>
     <div>
     </div>
-    <div class="letter" v-for="(letter, index) in word" :key="'wordArray' + index">{{letter}}</div></br>
-    <div  @click="checkLetter(letter)" :class="letterClass" v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
-        {{ letter }}
+    <div class="letter"
+        v-for="(letter, index) in wordDisplayLetters"
+          :key="'wordArray' + index">{{letter}}</div></br>
+    <div  @click="testLetter(letter)"
+        class="possibleLetter" :class="strikeThroughClass(letter)"
+          v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
+            {{ letter }}
     </div></br>
-    <div  @click="checkLetter(letter)" :class="letterClass" v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
-        {{ letter }}
+    <div  @click="testLetter(letter)"
+        class ="possibleLetter" :class="strikeThroughClass(letter)"
+          v-for="(letter, index) in lettersArr2" :key="'arr2-' + index">
+            {{ letter }}
     </div></br>
-    <div  @click="checkLetter(letter)" :class="letterClass" v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
-        {{ letter }}
+    <div  @click="testLetter(letter)"
+      class="possibleLetter" :class="strikeThroughClass(letter)"
+        v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
+          {{ letter }}
     </div></br>
-    <div v-for="(letter, index) in chosenLetterArray" :key="'arr4-' + index">
-        {{ letter }}
-      </div>
       <div>
        <h1 v-if="this.strikes >= 12">You Lose</h1>
     </div>
   </div>
 </template>
 <script>
+
+const wordsArray = require('./words.js')
 
 export default {
   name: 'app',
@@ -81,43 +88,36 @@ export default {
       msg: 'New Hangman Game',
       playing: true,
       buttonTxt: "Guess",
-      word: 'MEOW',
+      word: '',
       wordDisplayLetters: [],
-      wordNotDisplayLetters: [],
       usedLetters: [],
       wordArray: [],
-      chosenLetter: 'a',
-      chosenLetterArray: [],
       lettersArr1: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
       lettersArr2: ['J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'],
       lettersArr3: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-      letterClass: 'possibleLetter',
-      isUsed: true
     }
   },
   created() {
-    this.randomWordApi()
+    this.word = this.getRandomWord()
+    this.wordArray = this.word.toUpperCase().split('')
+    this.wordDisplayLetters = Array(this.word.length)
   },
   methods: {
-    async randomWordApi(){
-      await fetch('https://wordsapiv1.p.mashape.com/words?random=true', {
-        headers: {
-          "X-Mashape-Key": "tW0afqvn72mshW26R5qSzD0Ix8g5p19lwqcjsnGKh4XVnyKcHW",
-          "Accept": "application/json"
-        }
-      }).then(res => res.json())
-      .then((data) => {console.log(data)})
-    },
+    getRandomWord() {
+      //Gets random word from words data in words.js
+     let index = Math.floor((Math.random() * wordsArray.default.length + 1))
+     let word = wordsArray.default[index]
+     wordsArray.default.splice(index, 1)
+     return word
+   },
+   testLetter(chosenLetter){
 
-    testLetter(chosenLetter){
-      //create an array of letters that have been clicked on
-      //bind data to a function handler returns data on condition
       this.usedLetters.push(chosenLetter)
-      this.wordArray = this.word.toUpperCase().split('')
-      this.chosenLetterArray = this.wordArray.filter(char => char === chosenLetter)
-      console.log("chosenLetterArray", this.chosenLetterArray);
-      console.log("usedLetters", this.usedLetters);
-
+      
+      this.matchNotMatch(chosenLetter)
+      if (!this.wordArray.includes(chosenLetter)) {
+          this.iterClick()
+      }
     },
     iterClick () {
       if(this.strikes < 11) {
@@ -129,21 +129,18 @@ export default {
       } else {
         this.strikes = 0
         this.playing = true
-        this.buttonTxt = "Guess"
       }
     },
-    checkLetter(letter) {
-      this.testLetter(letter)
+    strikeThroughClass(letter) {
+      if (this.usedLetters.includes(letter)){
+        return "diagonal-strike"
+      }
     },
-
     matchNotMatch(letter) {
-      this.usedLetters.push(letter)
       let match = false
       for (let i = 0; i < this.wordDisplayLetters.length; i++) {
-        if (letter === this.wordLetters[i]) {
+        if (letter === this.wordArray[i]) {
           this.wordDisplayLetters.splice(i, 1, letter)
-        } else {
-          this.wordNotDisplayLetters.splice(i, 1, letter)
         }
           match = true
       }
@@ -178,6 +175,7 @@ export default {
     font-size: 30px;
     min-width: 30px;
     vertical-align: bottom;
+    color: #000000;
   }
   .possibleLetter {
     display: inline-block;
@@ -196,5 +194,15 @@ export default {
   button:hover {
       background-color: #e6e6e6;
       border-color: #adadad;
+  }
+  .initial-letter {
+    display: inline-block;
+    border-bottom: 1px solid;
+    border-color: #000000;
+    margin: 0px 3px 0px 3px;
+    font-size: 30px;
+    min-width: 30px;
+    vertical-align: bottom;
+    color: #ffffff;
   }
 </style>
