@@ -1,6 +1,5 @@
-
-<template>
-<div id = "app">
+ <template>
+ <div id = "app">
     <h1>{{ msg }}</h1>
     <div class="gallows">
       <svg width="350" height="260" viewBox="0 0 350 275"
@@ -48,12 +47,14 @@
           <line v-if="strikes > 9" x1="230" y1="170" x2="250" y2="200" style="stroke:black;fill:none;stroke-width:2px;" />
           <line v-if="strikes > 10" x1="230" y1="170" x2="210" y2="200" style="stroke:black;fill:none;stroke-width:2px;" />
         <!-- End the gallows -->
-
       </svg>
     </div>
+    <!-- Displays the letters of the word to guess-->
     <div class="letter"
         v-for="(letter, index) in wordDisplayLetters"
-          :key="'wordArray' + index">{{letter}}</div></br>
+          :key="'wordArray' + index">{{letter}}
+    </div></br>
+    <!-- Displays the letters that the user can click-->
     <div  @click="testLetter(letter)"
         class="possibleLetter" :class="strikeThroughClass(letter)"
           v-for="(letter, index) in lettersArr1" :key="'arr1-' + index">
@@ -69,16 +70,19 @@
         v-for="(letter, index) in lettersArr3" :key="'arr3-' + index">
           {{ letter }}
     </div></br>
-      <div v-if="this.strikes >= 12">
-       <h1>You Lose</h1>
-       <button @click="reset()">Play Again?</button>
-     </div>
-     <div v-if="this.win">
-      <h1>You Won!</h1>
-      <button @click="reset()">Play Again?</button>
-    </div>
-    <canvas v-show = "this.win" id = "confetti" style="position:fixed; top:0;left:0; z-index:-1" width="100%" height="1000px"></canvas>
-</div>
+    <!-- Appears if users loses-->
+    <div v-if="this.strikes >= 12">
+     <h1>You Lose</h1>
+     <button @click="reset()">Play Again?</button>
+   </div>
+   <!-- Appears if user wins-->
+   <div v-if="this.win">
+    <h1>You Won!</h1>
+    <button @click="reset()">Play Again?</button>
+  </div>
+    <canvas v-show = "this.win" id = "confetti"
+      style="position:fixed; top:0;left:0; z-index:-1"></canvas>
+ </div>
 </template>
 
 <script>
@@ -90,7 +94,7 @@ export default {
   data () {
     return {
       strikes: 0,
-      msg: 'New Hangman Game',
+      msg: 'Hangman',
       playing: true,
       buttonTxt: "Guess",
       word: '',
@@ -121,14 +125,15 @@ export default {
        return 'confetti'
      }
    },
+   // Tests letters
    testLetter(chosenLetter){
-     console.log(this.word);
       this.matchNotMatch(chosenLetter)
       if (!this.wordArray.includes(chosenLetter) && !this.usedLetters.includes(chosenLetter)) {
           this.iterClick(chosenLetter)
       }
       this.usedLetters.push(chosenLetter)
     },
+    //Forwards the build of the hangman gallows
     iterClick (letter) {
       if(this.strikes <= 11) {
         this.strikes++
@@ -139,6 +144,7 @@ export default {
         this.playing = true
       }
     },
+    //resets game to play again
     reset(){
       this.word = this.getRandomWord()
       this.wordArray = this.word.toUpperCase().split('')
@@ -147,11 +153,13 @@ export default {
       this.usedLetters = []
       this.win = false
     },
+    //Changes letter classes if they have already been clicked on
     strikeThroughClass(letter) {
       if (this.usedLetters.includes(letter)){
         return "diagonal-strike"
       }
     },
+    //Displays letter if the user correctly guessed a letter
     matchNotMatch(letter) {
       for (let i = 0; i < this.wordDisplayLetters.length; i++) {
          if (letter === this.wordArray[i]) {
@@ -161,106 +169,105 @@ export default {
       if(!this.wordDisplayLetters.includes(undefined)) {
         this.win = true
       }
-    },
+    }
   }
 }
 </script>
 
 <style>
-  #app {
-    text-align: center;
-    overflow:hidden;
-    position:relative;
-    z-index: 1;
-    width:100%;
-    height: 1000px;
-  }
-  .flex-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .coolNumber {
-    padding: 2px;
-    margin: 5px;
-  }
-  .diagonal-strike {
-    background: linear-gradient(to left top, transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%);
-    color: dimgrey;
-  }
-  .letter {
-    display: inline-block;
-    border-bottom: 1px solid;
-    margin: 0px 3px 0px 3px;
-    font-size: 30px;
-    min-width: 30px;
-    vertical-align: bottom;
-    color: #000000;
-  }
-  .possibleLetter {
-    display: inline-block;
-    margin: 10px 3px 0px 3px;
-    font-size: 30px;
-    min-width: 30px;
-    cursor: pointer;
-  }
-  button {
-    margin-top: 20px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  button:hover {
-      background-color: #e6e6e6;
-      border-color: #adadad;
-  }
-  .initial-letter {
-    display: inline-block;
-    border-bottom: 1px solid;
-    border-color: #000000;
-    margin: 0px 3px 0px 3px;
-    font-size: 30px;
-    min-width: 30px;
-    vertical-align: bottom;
-    color: #ffffff;
-  },
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: #000;
-    height: 100%;
-    width: 100%;
+#app {
+  text-align: center;
+  overflow:hidden;
+  position:relative;
+  z-index: 1;
+  width:100%;
+  height: 1000px;
+}
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coolNumber {
+  padding: 2px;
+  margin: 5px;
+}
+.diagonal-strike {
+  background: linear-gradient(to left top, transparent 47.75%, currentColor 49.5%, currentColor 50.5%, transparent 52.25%);
+  color: dimgrey;
+}
+.letter {
+  display: inline-block;
+  border-bottom: 1px solid;
+  margin: 0px 3px 0px 3px;
+  font-size: 30px;
+  min-width: 30px;
+  vertical-align: bottom;
+  color: #000000;
+}
+.possibleLetter {
+  display: inline-block;
+  margin: 10px 3px 0px 3px;
+  font-size: 30px;
+  min-width: 30px;
+  cursor: pointer;
+}
+button {
+  margin-top: 20px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+}
+button:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+.initial-letter {
+  display: inline-block;
+  border-bottom: 1px solid;
+  border-color: #000000;
+  margin: 0px 3px 0px 3px;
+  font-size: 30px;
+  min-width: 30px;
+  vertical-align: bottom;
+  color: #ffffff;
+},
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  height: 100%;
+  width: 100%;
 }
 
-  a.iprodev {
-    line-height: normal;
-    font-family: Varela Round, sans-serif;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 13px;
-    color: #A7AAAE;
-    position: absolute;
-    left: 20px;
-    bottom: 20px;
-    border: 1px solid #A7AAAE;
-    padding: 12px 20px 10px;
-    border-radius: 50px;
-    transition: all .1s ease-in-out;
-    text-transform: uppercase;
-  },
-  a.iprodev:hover {
-    background: #A7AAAE;
-    color: white;
-  }
-  .over_stuff{
-    position:absolute;
-    top:0px;
-    left:0px;
-    z-index:5;
-    padding:10px;
-    width:800px;
-    height:600px;
+a.iprodev {
+  line-height: normal;
+  font-family: Varela Round, sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 13px;
+  color: #A7AAAE;
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  border: 1px solid #A7AAAE;
+  padding: 12px 20px 10px;
+  border-radius: 50px;
+  transition: all .1s ease-in-out;
+  text-transform: uppercase;
+},
+a.iprodev:hover {
+  background: #A7AAAE;
+  color: white;
 }
-
+.over_stuff{
+  position:absolute;
+  top:0px;
+  left:0px;
+  z-index:5;
+  padding:10px;
+  width:800px;
+  height:600px;
+}
 </style>

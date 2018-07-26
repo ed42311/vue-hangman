@@ -357,8 +357,8 @@ document.addEventListener("DOMContentLoaded", function() {
       confettiPapers[i] = new ConfettiPaper(random() * canvasWidth, random() * canvasHeight);
     }
     this.resize = function() {
-      canvasWidth = canvasParent.offsetWidth;
-      canvasHeight = canvasParent.offsetHeight;
+      canvasWidth = window.innerWidth;
+      canvasHeight = window.innerHeight;
       canvas.width = canvasWidth * retina;
       canvas.height = canvasHeight * retina;
       ConfettiPaper.bounds = new Vector2(canvasWidth, canvasHeight);
