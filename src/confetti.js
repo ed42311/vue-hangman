@@ -340,8 +340,8 @@ document.addEventListener("DOMContentLoaded", function() {
     var i = 0;
     var canvas = document.getElementById(id);
     var canvasParent = canvas.parentNode;
-    var canvasWidth = canvasParent.offsetWidth;
-    var canvasHeight = canvasParent.offsetHeight;
+    var canvasWidth = window.innerWidth;
+    var canvasHeight = window.innerHeight;
     canvas.width = canvasWidth * retina;
     canvas.height = canvasHeight * retina;
     var context = canvas.getContext('2d');

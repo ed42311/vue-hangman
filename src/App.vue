@@ -81,7 +81,7 @@
     <button @click="reset()">Play Again?</button>
   </div>
     <canvas v-show = "this.win" id = "confetti"
-      style="position:fixed; top:0;left:0; z-index:-1"></canvas>
+      style="position:fixed; top:0;left:0; z-index:-1; width:100%; height:100%"></canvas>
  </div>
 </template>
 
@@ -233,13 +233,6 @@ button:hover {
   vertical-align: bottom;
   color: #ffffff;
 },
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #000;
-  height: 100%;
-  width: 100%;
-}
 
 a.iprodev {
   line-height: normal;
