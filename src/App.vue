@@ -1,7 +1,7 @@
 
 <template>
-  <div  id="app">
-    <!-- <canvas :class = "winClass()" width="800" height="1200"> -->
+<div id = "app">
+  <div  class="over-stuff">
     <h1>{{ msg }}</h1>
     <div class="gallows">
       <svg width="350" height="260" viewBox="0 0 350 275"
@@ -52,8 +52,6 @@
 
       </svg>
     </div>
-    <div>
-    </div>
     <div class="letter"
         v-for="(letter, index) in wordDisplayLetters"
           :key="'wordArray' + index">{{letter}}</div></br>
@@ -80,9 +78,11 @@
       <h1>You Won!</h1>
       <button @click="reset()">Play Again?</button>
     </div>
-    <!-- </canvas> -->
   </div>
+  <canvas id = "confetti" width="1200" height="1000"></canvas>
+</div>
 </template>
+
 <script>
 const confetti = require('./confetti.js')
 const wordsArray = require('./words.js')
@@ -126,7 +126,6 @@ export default {
      }
    },
    testLetter(chosenLetter){
-     console.log(this.word);
       this.matchNotMatch(chosenLetter)
       if (!this.wordArray.includes(chosenLetter) && !this.usedLetters.includes(chosenLetter)) {
           this.iterClick(chosenLetter)
@@ -175,6 +174,9 @@ export default {
     text-align: center;
     border: solid 2px lightgray;
     border-radius: 2px;
+    overflow:hidden;
+    position:relative;
+    z-index: 1;
   }
   .flex-container {
     display: flex;
@@ -233,12 +235,14 @@ export default {
     height: 100%;
     width: 100%;
   },
-  .confetti{
+  #confetti{
     position: absolute;
     left: 0;
     top: 0;
-    height: 100%;
-    width: 100%;
+    z-index:0;
+    opacity:0.1;
+    height:1200px;
+
   },
 
   a.iprodev {
@@ -261,5 +265,14 @@ export default {
     background: #A7AAAE;
     color: white;
   }
+  .over_stuff{
+    position:absolute;
+    top:0px;
+    left:0px;
+    z-index:5;
+    padding:10px;
+    width:800px;
+    height:600px;
+}  
 
 </style>
