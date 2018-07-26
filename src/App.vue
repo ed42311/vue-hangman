@@ -79,7 +79,8 @@
       <button @click="reset()">Play Again?</button>
     </div>
   </div>
-  <canvas id = "confetti" width="1200" height="1000"></canvas>
+  <canvas style="position:fixed; top:0;left:0" id = "confetti" width="1200" height="1000">
+  </canvas>
 </div>
 </template>
 
@@ -273,6 +274,6 @@ export default {
     padding:10px;
     width:800px;
     height:600px;
-}  
+}
 
 </style>
