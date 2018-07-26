@@ -1,7 +1,6 @@
 
 <template>
 <div id = "app">
-  <div  class="over-stuff">
     <h1>{{ msg }}</h1>
     <div class="gallows">
       <svg width="350" height="260" viewBox="0 0 350 275"
@@ -78,9 +77,7 @@
       <h1>You Won!</h1>
       <button @click="reset()">Play Again?</button>
     </div>
-  </div>
-  <canvas style="position:fixed; top:0;left:0" id = "confetti" width="1200" height="1000">
-  </canvas>
+    <canvas v-show = "this.win" id = "confetti" style="position:fixed; top:0;left:0; z-index:-1" width="100%" height="1000px"></canvas>
 </div>
 </template>
 
@@ -107,8 +104,6 @@ export default {
     }
   },
   created() {
-    this.winClass()
-    confetti
     this.word = this.getRandomWord()
     this.wordArray = this.word.toUpperCase().split('')
     this.wordDisplayLetters = Array(this.word.length)
@@ -127,6 +122,7 @@ export default {
      }
    },
    testLetter(chosenLetter){
+     console.log(this.word);
       this.matchNotMatch(chosenLetter)
       if (!this.wordArray.includes(chosenLetter) && !this.usedLetters.includes(chosenLetter)) {
           this.iterClick(chosenLetter)
@@ -173,11 +169,11 @@ export default {
 <style>
   #app {
     text-align: center;
-    border: solid 2px lightgray;
-    border-radius: 2px;
     overflow:hidden;
     position:relative;
     z-index: 1;
+    width:100%;
+    height: 1000px;
   }
   .flex-container {
     display: flex;
@@ -235,16 +231,7 @@ export default {
     background: #000;
     height: 100%;
     width: 100%;
-  },
-  #confetti{
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index:0;
-    opacity:0.1;
-    height:1200px;
-
-  },
+}
 
   a.iprodev {
     line-height: normal;
