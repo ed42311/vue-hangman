@@ -234,26 +234,6 @@ button:hover {
   color: #ffffff;
 },
 
-a.iprodev {
-  line-height: normal;
-  font-family: Varela Round, sans-serif;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 13px;
-  color: #A7AAAE;
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  border: 1px solid #A7AAAE;
-  padding: 12px 20px 10px;
-  border-radius: 50px;
-  transition: all .1s ease-in-out;
-  text-transform: uppercase;
-},
-a.iprodev:hover {
-  background: #A7AAAE;
-  color: white;
-}
 .over_stuff{
   position:absolute;
   top:0px;
