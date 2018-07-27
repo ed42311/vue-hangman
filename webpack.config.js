@@ -1,13 +1,14 @@
-var path = require('path')
-var webpack = require('webpack')
+const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
+  context: path.join(__dirname, '/'),
   entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, '/'),
-    publicPath: '/',
-    filename: 'build.js'
-  },
+    output: {
+      path: path.join(__dirname),
+      filename: './dist/build.js',
+      publicPath: '/'
+    },
   module: {
     rules: [
       {
